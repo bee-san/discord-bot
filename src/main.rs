@@ -80,20 +80,19 @@ async fn ciphey(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.strip_prefix("$ciphey ").unwrap();
     let config = Config::default();
     let result = perform_cracking(message, config);
-    if result.is_some(){
-        let unwrapped_result = result.unwrap();
-        let output = unwrapped_result.text[0].clone();
-        let output_path = unwrapped_result.path
-        .iter()
-        .map(|c| c.decoder)
-        .collect::<Vec<_>>()
-        .join(" → ");
-        let output_string = format!("Successfully decoded:\n```\n{}\n```The path is:\n```\n{}\n``` ", output, output_path);
-        msg.reply(ctx, output_string).await?;
-    }
-    else{
+    if !result.is_some(){
         msg.reply(ctx, "Failed to decode 😭").await?;
     }
+    let unwrapped_result = result.unwrap();
+    let output = unwrapped_result.text[0].clone();
+    let output_path = unwrapped_result.path
+    .iter()
+    .map(|c| c.decoder)
+    .collect::<Vec<_>>()
+    .join(" → ");
+    let output_string = format!("Successfully decoded:\n```\n{}\n```The path is:\n```\n{}\n``` ", output, output_path);
+    msg.reply(ctx, output_string).await?;
+
     
 
     Ok(())
