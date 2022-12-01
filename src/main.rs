@@ -1,13 +1,18 @@
 use std::env;
 
+use serde_json::Value;
 use serenity::async_trait;
+use serenity::futures::future::Map;
 use serenity::prelude::*;
 use serenity::model::channel::Message;
 use serenity::framework::standard::macros::{command, group};
 use serenity::framework::standard::{StandardFramework, CommandResult};
 
+use lemmeknow::{Identifier, Data};
+
 #[group]
 #[commands(ping)]
+#[commands(what)]
 struct General;
 
 struct Handler;
@@ -43,3 +48,26 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
 
     Ok(())
 }
+
+#[command]
+async fn what(ctx: &Context, msg: &Message) -> CommandResult {
+    let message = msg.content.strip_prefix("$what ").unwrap();
+    println!("{}", message);
+    let mut identifier = Identifier::default();
+    identifier.boundaryless = true;
+    identifier.min_rarity = 0.1;
+    let lemmeknow_result = identifier.identify(message);
+    if lemmeknow_result.is_empty(){
+        msg.reply(ctx, "Error: Lemmeknow returned nothing!").await?;
+    }
+    let mut messages = Vec::new();
+    for i in lemmeknow_result{
+        println!("i is {:?}", i);
+        messages.push(i.data.name);
+    }
+    let output = messages.join("\n");
+    println!("{}", &output);
+    msg.reply(ctx, output).await?;
+    Ok(())
+}
+
