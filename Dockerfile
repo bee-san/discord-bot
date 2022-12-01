@@ -1,14 +1,10 @@
-FROM rust:alpine as builder
-LABEL maintainer="Autumn <https://github.com/bee-san>"
-RUN apk add --no-cache build-base
+# syntax = docker/dockerfile:experimental
 
-WORKDIR /usr/src/discord_bot
-COPY Cargo.toml Cargo.lock ./
-COPY src/ src/
-RUN cargo install --path .
+FROM rust:latest 
+WORKDIR /
+COPY ./ ./
+RUN --mount=type=tmpfs,target=/root/.cargo cargo build --release
 
-COPY target/release/ultimate_hacking_bot ./
-
-FROM alpine:latest
-COPY --from=builder /usr/local/cargo/bin/ultimate_hacking_bot /usr/local/bin/ultimate_hacking_bot
-ENTRYPOINT [ "/usr/local/bin/ultimate_hacking_bot" ]
+FROM arm64v8/ubuntu:latest
+COPY --from=0 /target/release ./
+CMD ["./ultimate_hacking_bot"]
