@@ -7,12 +7,15 @@ use serenity::prelude::*;
 use serenity::model::channel::Message;
 use serenity::framework::standard::macros::{command, group};
 use serenity::framework::standard::{StandardFramework, CommandResult};
+use ares::perform_cracking;
+use ares::config::Config;
 
 use lemmeknow::{Identifier, Data};
 
 #[group]
 #[commands(ping)]
 #[commands(what)]
+#[commands(ciphey)]
 struct General;
 
 struct Handler;
@@ -71,3 +74,27 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
     Ok(())
 }
 
+
+#[command]
+async fn ciphey(ctx: &Context, msg: &Message) -> CommandResult {
+    let message = msg.content.strip_prefix("$ciphey ").unwrap();
+    let config = Config::default();
+    let result = perform_cracking(message, config);
+    if result.is_some(){
+        let unwrapped_result = result.unwrap();
+        let output = unwrapped_result.text[0].clone();
+        let output_path = unwrapped_result.path
+        .iter()
+        .map(|c| c.decoder)
+        .collect::<Vec<_>>()
+        .join(" → ");
+        let output_string = format!("Successfully decoded:\n```\n{}\n```The path is:\n```\n{}\n``` ", output, output_path);
+        msg.reply(ctx, output_string).await?;
+    }
+    else{
+        msg.reply(ctx, "Failed to decode 😭").await?;
+    }
+    
+
+    Ok(())
+}
