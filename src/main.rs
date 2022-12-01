@@ -1,16 +1,14 @@
 use std::env;
 
-use serde_json::Value;
-use serenity::async_trait;
-use serenity::futures::future::Map;
-use serenity::prelude::*;
-use serenity::model::channel::Message;
-use serenity::framework::standard::macros::{command, group};
-use serenity::framework::standard::{StandardFramework, CommandResult};
-use ares::perform_cracking;
 use ares::config::Config;
+use ares::perform_cracking;
+use serenity::async_trait;
+use serenity::framework::standard::macros::{command, group};
+use serenity::framework::standard::{CommandResult, StandardFramework};
+use serenity::model::channel::Message;
+use serenity::prelude::*;
 
-use lemmeknow::{Identifier, Data};
+use lemmeknow::Identifier;
 
 #[group]
 #[commands(ping)]
@@ -60,11 +58,11 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
     identifier.boundaryless = true;
     identifier.min_rarity = 0.1;
     let lemmeknow_result = identifier.identify(message);
-    if lemmeknow_result.is_empty(){
+    if lemmeknow_result.is_empty() {
         msg.reply(ctx, "Error: Lemmeknow returned nothing!").await?;
     }
     let mut messages = Vec::new();
-    for i in lemmeknow_result{
+    for i in lemmeknow_result {
         println!("i is {:?}", i);
         messages.push(i.data.name);
     }
@@ -74,26 +72,27 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
     Ok(())
 }
 
-
 #[command]
 async fn ciphey(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.strip_prefix("$ciphey ").unwrap();
     let config = Config::default();
     let result = perform_cracking(message, config);
-    if !result.is_some(){
+    if !result.is_some() {
         msg.reply(ctx, "Failed to decode 😭").await?;
     }
     let unwrapped_result = result.unwrap();
     let output = unwrapped_result.text[0].clone();
-    let output_path = unwrapped_result.path
-    .iter()
-    .map(|c| c.decoder)
-    .collect::<Vec<_>>()
-    .join(" → ");
-    let output_string = format!("Successfully decoded:\n```\n{}\n```The path is:\n```\n{}\n``` ", output, output_path);
+    let output_path = unwrapped_result
+        .path
+        .iter()
+        .map(|c| c.decoder)
+        .collect::<Vec<_>>()
+        .join(" → ");
+    let output_string = format!(
+        "Successfully decoded:\n```\n{}\n```The path is:\n```\n{}\n``` ",
+        output, output_path
+    );
     msg.reply(ctx, output_string).await?;
-
-    
 
     Ok(())
 }
