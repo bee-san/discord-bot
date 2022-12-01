@@ -1,10 +1,8 @@
-# syntax = docker/dockerfile:experimental
-
-FROM rust:latest 
+FROM rust
 WORKDIR /
 COPY ./ ./
-RUN --mount=type=tmpfs,target=/root/.cargo cargo build --release
+RUN cargo build --release
 
-FROM arm64v8/ubuntu:latest
+FROM rust
 COPY --from=0 /target/release ./
 CMD ["./ultimate_hacking_bot"]
