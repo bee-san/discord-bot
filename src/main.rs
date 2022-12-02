@@ -14,9 +14,7 @@ use lemmeknow::Identifier;
 use serenity::utils::Colour;
 
 #[group]
-#[commands(ping)]
-#[commands(what)]
-#[commands(ares)]
+#[commands(what, ares, ping)]
 struct General;
 
 struct Handler;
@@ -61,10 +59,10 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
         .channel_id
         .send_message(&ctx.http, |m| {
             m.content(&tag_user).embed(|e| {
-                e.title("Failed <a:1048302149077057627:cheemsburgar:>")
+                e.title("Failed 😢")
                     .field(
                         "Sadly your text could not be decoded 🙈 ",
-                        "Try using the CLI tool.",
+                        "Try using the CLI tool or visiting #coded-messages https://discord.com/channels/754001738184392704/829065151851528243",
                         false,
                     )
                     .footer(|f| f.text("http://discord.skerritt.blog"))
