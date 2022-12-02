@@ -15,9 +15,8 @@ use serenity::utils::Colour;
 
 #[group]
 #[commands(ping)]
-#[commands(ciphey)]
-#[commands(ares)]
 #[commands(what)]
+#[commands(ares)]
 struct General;
 
 struct Handler;
@@ -49,13 +48,34 @@ async fn main() {
 #[command]
 async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.strip_prefix("$ares ").unwrap();
+
+    let user = &msg.author.id;
+    let tag_user = format!("👋 <@!{}>", user);
+
     println!("Trying ciphey");
     println!("The message is {}", message);
     let config = Config::default();
     let result = perform_cracking(message, config);
     if !result.is_some() {
-        println!("Failed to decode");
-        msg.reply(ctx, "Failed to decode 😭").await?;
+        let _msg = msg
+        .channel_id
+        .send_message(&ctx.http, |m| {
+            m.content(&tag_user).embed(|e| {
+                e.title("Failed <a:1048302149077057627:cheemsburgar:>")
+                    .field(
+                        "Sadly your text could not be decoded 🙈 ",
+                        "Try using the CLI tool.",
+                        false,
+                    )
+                    .footer(|f| f.text("http://discord.skerritt.blog"))
+                    // Add a timestamp for the current time
+                    // This also accepts a rfc3339 Timestamp
+                    .url("https://github.com/bee-san/ares")
+                    .timestamp(Timestamp::now())
+                    .color(Colour::DARK_RED)
+            })
+        })
+        .await?;
     }
     let unwrapped_result = result.unwrap();
     let output = unwrapped_result.text[0].clone();
@@ -66,9 +86,6 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
         .collect::<Vec<_>>()
         .join(" → ");
     println!("Output is {} and path is {}", output, output_path);
-
-    let user = &msg.author.id;
-    let tag_user = format!("👋 <@!{}>", user);
 
     let _msg = msg
         .channel_id
@@ -116,7 +133,7 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
                 m.content(&tag_user).embed(|e| {
                     e.title("Failed 😿")
                         .field(
-                            "Sadly your text could not be idenfieid :( ",
+                            "Sadly your text could not be identified 🙈 ",
                             "Try asking in #coded-messages maybe?",
                             false,
                         )
