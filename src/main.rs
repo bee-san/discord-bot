@@ -114,7 +114,7 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
             .channel_id
             .send_message(&ctx.http, |m| {
                 m.content(&tag_user).embed(|e| {
-                    e.title("Failed :cheemsburgar:")
+                    e.title("Failed 😿")
                         .field(
                             "Sadly your text could not be idenfieid :( ",
                             "Try asking in #coded-messages maybe?",
