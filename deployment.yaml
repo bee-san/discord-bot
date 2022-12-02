@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discord
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discord
+  template:
+    metadata:
+      labels:
+        app: discord
+    spec:
+      containers:
+      - name: discord
+        image: autumnskerritt/ultimate-hacking-bot:latest
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        env:
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: discord-token
+              key: DISCORD_TOKEN

@@ -1785,6 +1785,7 @@ name = "ultimate_hacking_bot"
 version = "0.1.0"
 dependencies = [
  "lemmeknow",
+ "log",
  "project_ares",
  "serde_json",
  "serenity",
