@@ -110,7 +110,24 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
     identifier.min_rarity = 0.1;
     let lemmeknow_result = identifier.identify(message);
     if lemmeknow_result.is_empty() {
-        msg.reply(ctx, "Error: Lemmeknow returned nothing!").await?;
+        let _msg = msg
+            .channel_id
+            .send_message(&ctx.http, |m| {
+                m.content(&tag_user).embed(|e| {
+                    e.title("Failed :cheemsburgar:")
+                        .field(
+                            "Sadly your text could not be idenfieid :( ",
+                            "Try asking in #coded-messages maybe?",
+                            false,
+                        )
+                        .footer(|f| f.text("http://discord.skerritt.blog"))
+                        // Add a timestamp for the current time
+                        // This also accepts a rfc3339 Timestamp
+                        .timestamp(Timestamp::now())
+                        .color(Colour::DARK_RED)
+                })
+            })
+            .await?;
     }
 
     let mut messages = Vec::new();
