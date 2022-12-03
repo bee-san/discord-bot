@@ -9,12 +9,13 @@ use serenity::framework::standard::{CommandResult, StandardFramework};
 use serenity::model::channel::Message;
 use serenity::model::Timestamp;
 use serenity::prelude::*;
+use gethostname::gethostname;
 
 use lemmeknow::Identifier;
 use serenity::utils::Colour;
 
 #[group]
-#[commands(what, ares, ping)]
+#[commands(what, ares, ping, whereami)]
 struct General;
 
 struct Handler;
@@ -108,6 +109,14 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
     debug!("Pinging");
     msg.reply(ctx, "Pong!").await?;
     println!("Pinging");
+    Ok(())
+}
+
+#[command]
+async fn whereami(ctx: &Context, msg: &Message) -> CommandResult {
+    debug!("Where in the world am I?");
+    let output = format!("{:?}", gethostname());
+    msg.reply(ctx, output).await?;
     Ok(())
 }
 
