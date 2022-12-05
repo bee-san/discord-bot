@@ -17,8 +17,8 @@ spec:
         image: autumnskerritt/ultimate-hacking-bot:latest
         resources:
           limits:
-            cpu: 200m
-            memory: 200Mi
+            cpu: 1000m
+            memory: 600Mi
         env:
         - name: DISCORD_TOKEN
           valueFrom:
