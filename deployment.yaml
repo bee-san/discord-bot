@@ -12,8 +12,6 @@ spec:
       labels:
         app: discord
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: raspberrypi
       containers:
       - name: discord
         image: autumnskerritt/ultimate-hacking-bot:latest
