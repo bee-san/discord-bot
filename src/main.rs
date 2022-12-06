@@ -15,7 +15,7 @@ use lemmeknow::Identifier;
 use serenity::utils::Colour;
 
 #[group]
-#[commands(what, ares, ping, whereami, ciphey, help)]
+#[commands(what, ares, ping, whereami, help)]
 struct General;
 
 struct Handler;
@@ -184,6 +184,7 @@ async fn what(ctx: &Context, msg: &Message) -> CommandResult {
 }
 
 #[command]
+<<<<<<< Updated upstream
 async fn ciphey(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.strip_prefix("$ciphey ").unwrap();
     let user = &msg.author.id;
@@ -246,6 +247,8 @@ async fn ciphey(ctx: &Context, msg: &Message) -> CommandResult {
 }
 
 #[command]
+=======
+>>>>>>> Stashed changes
 async fn help(ctx: &Context, msg: &Message) -> CommandResult {
     let message: &str = "
 👋 The ultimate hacking bot
