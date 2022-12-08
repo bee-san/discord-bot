@@ -32,4 +32,5 @@ jobs:
           platforms: linux/arm7
           push: true
           tags: |
-            user/app:latest
+            ${{ env.REGISTRY }}/${{ github.repository }}/server:${{ github.sha }}
+          # user/app:latest
