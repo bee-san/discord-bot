@@ -55,10 +55,12 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
 
     trace!("Trying Ciphey");
     trace!("The message is {}", message);
-    let config = Config::default();
+    let mut config = Config::default();
+    // 10 seconds because the bot is slow
+    config.timeout = 10;
     let result = perform_cracking(message, config);
     if !result.is_some() {
-        trace!("Ciphey is returing something....");
+        trace!("Ares is returning something....");
         let _msg = msg
         .channel_id
         .send_message(&ctx.http, |m| {
@@ -200,12 +202,6 @@ $what 192.168.0.1
 ```
 
 Run Lemmeknow / PyWhat on the input to identify it <https://github.com/swanandx/lemmeknow>
-
-```
-$ciphey aGVsbG8=
-```
-
-Decodes the text using Ciphey <https://github.com/Ciphey/Ciphey>
 
 ```
 $ping
