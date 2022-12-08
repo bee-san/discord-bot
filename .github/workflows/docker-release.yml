@@ -31,4 +31,3 @@ jobs:
           push: true
           tags: |
             user/app:latest
-            user/app:${{ github.event.release.tag_name }}
