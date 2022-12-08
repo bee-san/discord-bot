@@ -2,8 +2,9 @@ name: Docker Build & Release
 
 # When we publish a new release
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - 'main'
 
 jobs:
   docker:
