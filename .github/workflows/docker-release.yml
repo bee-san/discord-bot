@@ -29,5 +29,6 @@ jobs:
           # arm7 is needed for the discord bot
           platforms: linux/arm7, linux/amd64,linux/arm64
           push: true
+          context: .
           tags: |
             user/app:latest
