@@ -49,16 +49,50 @@ async fn main() {
 #[command]
 async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.strip_prefix("$ares ").unwrap();
-
     let user = &msg.author.id;
     let tag_user = format!("👋 <@!{}>", user);
+    
+    let mut to_decode: String = "Default".to_string();
+    if message.contains("pastebin") {
+        if !message.contains("/raw/"){
+            let _msg = msg
+            .channel_id
+            .send_message(&ctx.http, |m| {
+                m.content(&tag_user).embed(|e| {
+                    e.title("Failed 😢")
+                        .field(
+                            "Could not open your Pastebin, it needs to be the raw data.",
+                            "Please add /raw/ to your pastebin like https://pastebin.com/raw/37VuHzqa or by clicking 'raw' on the paste.",
+                            false,
+                        )
+                        .footer(|f| f.text("http://discord.skerritt.blog"))
+                        // Add a timestamp for the current time
+                        // This also accepts a rfc3339 Timestamp
+                        .url("https://github.com/bee-san/ares")
+                        .timestamp(Timestamp::now())
+                        .color(Colour::DARK_RED)
+                })
+            })
+            .await?;
+        } else {
+            println!("Pastebin is raw");
+            // Pastebin is raw
+            let resp = reqwest::get(message)
+            .await?
+            .text()
+            .await?;
+            to_decode =  resp;
+        }
+    } else {
+        to_decode = message.to_string();
+    }
 
     trace!("Trying Ciphey");
-    trace!("The message is {}", message);
+    trace!("The message is {}", &to_decode);
     let mut config = Config::default();
     // 10 seconds because the bot is slow
     config.timeout = 10;
-    let result = perform_cracking(message, config);
+    let result = perform_cracking(&to_decode, config);
     if !result.is_some() {
         trace!("Ares is returning something....");
         let _msg = msg
