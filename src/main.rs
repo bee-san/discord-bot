@@ -51,10 +51,10 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.strip_prefix("$ares ").unwrap();
     let user = &msg.author.id;
     let tag_user = format!("👋 <@!{}>", user);
-    
+
     let mut to_decode: String = "Default".to_string();
     if message.contains("pastebin") {
-        if !message.contains("/raw/"){
+        if !message.contains("/raw/") {
             let _msg = msg
             .channel_id
             .send_message(&ctx.http, |m| {
@@ -77,11 +77,8 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
         } else {
             println!("Pastebin is raw");
             // Pastebin is raw
-            let resp = reqwest::get(message)
-            .await?
-            .text()
-            .await?;
-            to_decode =  resp;
+            let resp = reqwest::get(message).await?.text().await?;
+            to_decode = resp;
         }
     } else {
         to_decode = message.to_string();
@@ -230,6 +227,12 @@ $ares aGVsbG8=
 ```
 
 Decodes the text aGVsbG8= with Ares, the next generation of Ciphey <http://github.com/bee-san/Ares>
+
+```
+$ares https://pastebin.com/raw/05umSkne
+```
+
+If your file is too large to copy & paste you can upload it to pastebin, get the raw link and Ares will decode it.
 
 ```
 $what 192.168.0.1
