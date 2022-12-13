@@ -1,9 +1,12 @@
-FROM --platform=$BUILDPLATFORM rust:latest
-WORKDIR /
-COPY ./ ./
-RUN cargo build --release
+FROM --platform=linux/arm/v7 rust:latest as builder
+WORKDIR /app
+COPY Cargo.toml Cargo.lock ./
+COPY src/ src/
+CMD ["cargo", "build", "--release"]
 
+FROM --platform=linux/arm/v7 ubuntu:latest
+WORKDIR /app
 
-FROM --platform=$BUILDPLATFORM ubuntu:latest
-COPY --from=0 /target/release ./
-CMD ["./ultimate_hacking_bot"]
+COPY --from=builder /app/target/release/ultimate_hacking_bot /app/ultimate_hacking_bot
+
+CMD ["/app/ultimate_hacking_bot"]
