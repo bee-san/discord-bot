@@ -88,9 +88,9 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
     trace!("The message is {}", &to_decode);
     let mut config = Config::default();
     // 10 seconds because the bot is slow
-    config.timeout = 10;
+    config.timeout = 1;
     let result = perform_cracking(&to_decode, config);
-    if !result.is_some() {
+    if result.is_none() {
         trace!("Ares is returning something....");
         let _msg = msg
         .channel_id
@@ -113,6 +113,8 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
         .await?;
     }
     let unwrapped_result = result.unwrap();
+    println!("pats");
+    trace!("Decoder is unwrapped");
     let output = unwrapped_result.text[0].clone();
     let output_path = unwrapped_result
         .path

@@ -17,11 +17,13 @@ spec:
         image: autumnskerritt/ultimate-hacking-bot:1.0.2
         resources:
           limits:
-            cpu: 1000m
-            memory: 600Mi
+            cpu: "0.3"
+            memory: 400Mi
         env:
         - name: DISCORD_TOKEN
           valueFrom:
             secretKeyRef:
               name: discord-token
               key: DISCORD_TOKEN
+      nodeSelector:
+        type: worker
