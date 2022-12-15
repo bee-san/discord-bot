@@ -9,7 +9,8 @@ edition = "2021"
 gethostname = "0.4.1"
 lemmeknow = "0.7.0"
 log = "0.4.17"
-project_ares = "0.7.0"
+project_ares = "0.8.0"
+reqwest = { version = "0.11", default-features = false, features = ["rustls-tls"] }
 serde_json = "1.0.89"
 serenity = "0.11.5"
 tokio = { version = "1.23.0", features = ["macros", "rt-multi-thread"] }

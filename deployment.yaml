@@ -14,14 +14,16 @@ spec:
     spec:
       containers:
       - name: discord
-        image: autumnskerritt/ultimate-hacking-bot:1.0.2
+        image: autumnskerritt/ultimate-hacking-bot:1.1.0
         resources:
           limits:
-            cpu: 1000m
-            memory: 600Mi
+            cpu: "0.3"
+            memory: 400Mi
         env:
         - name: DISCORD_TOKEN
           valueFrom:
             secretKeyRef:
               name: discord-token
               key: DISCORD_TOKEN
+      nodeSelector:
+        type: worker
