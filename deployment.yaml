@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: discord
-        image: autumnskerritt/ultimate-hacking-bot:1.0.2
+        image: autumnskerritt/ultimate-hacking-bot:1.1.0
         resources:
           limits:
             cpu: "0.3"

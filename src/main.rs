@@ -113,7 +113,6 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
         .await?;
     }
     let unwrapped_result = result.unwrap();
-    println!("pats");
     trace!("Decoder is unwrapped");
     let output = unwrapped_result.text[0].clone();
     let output_path = unwrapped_result
