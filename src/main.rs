@@ -340,7 +340,8 @@ async fn sth(ctx: &Context, msg: &Message) -> CommandResult {
 
     #[derive(Deserialize)]
     struct Body {
-        plaintext: String,
+        Plaintext: String,
+        Type: String,
     }
 
 
@@ -354,15 +355,18 @@ async fn sth(ctx: &Context, msg: &Message) -> CommandResult {
         .send()
         .await.unwrap();
     
-        let text: Data = resp.json().await.unwrap();
-        let output = text.body.remove(&text).unwrap().plaintext;
+        let mut text: Data = resp.json().await.unwrap();
+    let data = text.body.remove(message).unwrap();
+    let output = data.Plaintext;
+    let output_type = data.Type;
 
     let _msg = msg
         .channel_id
         .send_message(&ctx.http, |m| {
             m.content(&tag_user).embed(|e| {
                 e.title("🥳 Your text has been de-hashed!")
-                    .field("The plaintext is: {:?}", output, false)
+                    .field("The plaintext is: ", output, false)
+                    .field("And the hash type is: ", output_type, false)
                     .footer(|f| f.text("http://discord.skerritt.blog"))
                     // Add a timestamp for the current time
                     // This also accepts a rfc3339 Timestamp
