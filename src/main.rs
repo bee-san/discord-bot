@@ -1,9 +1,11 @@
+use std::collections::HashMap;
 use std::env;
 
 use ares::config::Config;
 use ares::perform_cracking;
 use gethostname::gethostname;
 use log::{debug, error, trace};
+use serde::Deserialize;
 use serenity::async_trait;
 use serenity::framework::standard::macros::{command, group};
 use serenity::framework::standard::{CommandResult, StandardFramework};
@@ -329,57 +331,46 @@ async fn sth(ctx: &Context, msg: &Message) -> CommandResult {
     println!("Trying STH");
 
     // Create a new reqwest client
-    let client = reqwest::Client::new();
-    let url = "https://av5b81zg3k.execute-api.us-east-2.amazonaws.com/prod/lookup";
     let hash = message;
-    let payload = format!("{{\"Hash\": [\"{}\"]}}", hash);
-    println!("{}", &payload);
-    let response = client.get(url)
-        .header("Content-Type", "application/json")
-        .body(payload)
-        .send()
-        .await?;
 
-    // Print the response status
-    println!("Response status: {}", response.status());
-
-    // Read the response body
-    let body = response.text().await?;
-
-    if body == "{\"message\": \"Invalid request body\"}" {
-        let _msg = msg
-            .channel_id
-            .send_message(&ctx.http, |m| {
-                m.content(&tag_user).embed(|e| {
-                    e.title("😭 Error: Your text could not be decoded")
-                        .field(
-                            "You have some alternatives",
-                            "Use $ares to use Ares, use the Ciphey CLI or use the Ares CLI.",
-                            false,
-                        )
-                        .footer(|f| f.text("http://discord.skerritt.blog"))
-                        // Add a timestamp for the current time
-                        // This also accepts a rfc3339 Timestamp
-                        .timestamp(Timestamp::now())
-                        .color(Colour::RED)
-                })
-            })
-            .await?;
-    } else {
-        let _msg = msg
-            .channel_id
-            .send_message(&ctx.http, |m| {
-                m.content(&tag_user).embed(|e| {
-                    e.title("🥳 Your text has been de-hashed!")
-                        .field("The plaintext is:", body.trim_matches('"'), false)
-                        .footer(|f| f.text("http://discord.skerritt.blog"))
-                        // Add a timestamp for the current time
-                        // This also accepts a rfc3339 Timestamp
-                        .timestamp(Timestamp::now())
-                        .color(Colour::DARK_GREEN)
-                })
-            })
-            .await?;
+    #[derive(Deserialize)]
+    struct Data {
+        body: std::collections::HashMap<String, Body>,
     }
+
+    #[derive(Deserialize)]
+    struct Body {
+        plaintext: String,
+    }
+
+
+    let mut data = HashMap::new();
+    data.insert("Hash", [&hash]);
+
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("https://av5b81zg3k.execute-api.us-east-2.amazonaws.com/prod/lookup")
+        .json(&data)
+        .send()
+        .await.unwrap();
+    
+        let text: Data = resp.json().await.unwrap();
+        let output = text.body.remove(&text).unwrap().plaintext;
+
+    let _msg = msg
+        .channel_id
+        .send_message(&ctx.http, |m| {
+            m.content(&tag_user).embed(|e| {
+                e.title("🥳 Your text has been de-hashed!")
+                    .field("The plaintext is: {:?}", output, false)
+                    .footer(|f| f.text("http://discord.skerritt.blog"))
+                    // Add a timestamp for the current time
+                    // This also accepts a rfc3339 Timestamp
+                    .timestamp(Timestamp::now())
+                    .color(Colour::DARK_GREEN)
+            })
+        })
+        .await?;
+    
     Ok(())
 }
