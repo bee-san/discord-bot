@@ -15,7 +15,7 @@ use lemmeknow::Identifier;
 use serenity::utils::Colour;
 
 #[group]
-#[commands(what, ares, ping, whereami, help, ciphey)]
+#[commands(what, ares, ping, whereami, help, ciphey, sth)]
 struct General;
 
 struct Handler;
@@ -246,6 +246,12 @@ $ping
 ```
 
 PONG!
+
+```
+$sth 5f4dcc3b5aa765d61d8327deb882cf99
+```
+
+Runs Search-That-Hash on the hash.
     ";
 
     msg.reply(ctx, message).await?;
@@ -306,7 +312,71 @@ async fn ciphey(ctx: &Context, msg: &Message) -> CommandResult {
                         // Add a timestamp for the current time
                         // This also accepts a rfc3339 Timestamp
                         .timestamp(Timestamp::now())
+                        .color(Colour::DARK_GREEN)
+                })
+            })
+            .await?;
+    }
+    Ok(())
+}
+
+#[command]
+async fn sth(ctx: &Context, msg: &Message) -> CommandResult {
+    println!("Trying STH");
+    let message = msg.content.strip_prefix("$sth ").unwrap();
+    let user = &msg.author.id;
+    let tag_user = format!("👋 <@!{}>", user);
+    println!("Trying STH");
+
+    // Create a new reqwest client
+    let client = reqwest::Client::new();
+    let url = "https://av5b81zg3k.execute-api.us-east-2.amazonaws.com/prod/lookup";
+    let hash = message;
+    let payload = format!("{{\"Hash\": [\"{}\"]}}", hash);
+    println!("{}", &payload);
+    let response = client.get(url)
+        .header("Content-Type", "application/json")
+        .body(payload)
+        .send()
+        .await?;
+
+    // Print the response status
+    println!("Response status: {}", response.status());
+
+    // Read the response body
+    let body = response.text().await?;
+
+    if body == "{\"message\": \"Invalid request body\"}" {
+        let _msg = msg
+            .channel_id
+            .send_message(&ctx.http, |m| {
+                m.content(&tag_user).embed(|e| {
+                    e.title("😭 Error: Your text could not be decoded")
+                        .field(
+                            "You have some alternatives",
+                            "Use $ares to use Ares, use the Ciphey CLI or use the Ares CLI.",
+                            false,
+                        )
+                        .footer(|f| f.text("http://discord.skerritt.blog"))
+                        // Add a timestamp for the current time
+                        // This also accepts a rfc3339 Timestamp
+                        .timestamp(Timestamp::now())
                         .color(Colour::RED)
+                })
+            })
+            .await?;
+    } else {
+        let _msg = msg
+            .channel_id
+            .send_message(&ctx.http, |m| {
+                m.content(&tag_user).embed(|e| {
+                    e.title("🥳 Your text has been de-hashed!")
+                        .field("The plaintext is:", body.trim_matches('"'), false)
+                        .footer(|f| f.text("http://discord.skerritt.blog"))
+                        // Add a timestamp for the current time
+                        // This also accepts a rfc3339 Timestamp
+                        .timestamp(Timestamp::now())
+                        .color(Colour::DARK_GREEN)
                 })
             })
             .await?;
