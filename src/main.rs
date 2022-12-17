@@ -250,6 +250,12 @@ $ping
 PONG!
 
 ```
+$ciphey aGVsbG8=
+```
+
+Runs Ciphey on the given text.
+
+```
 $sth 5f4dcc3b5aa765d61d8327deb882cf99
 ```
 
