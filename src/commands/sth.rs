@@ -1,5 +1,5 @@
-use lemmeknow::Identifier;
-use log::{debug, trace};
+
+
 use serde::Deserialize;
 use serenity::framework::standard::macros::command;
 use serenity::framework::standard::{Args, CommandResult};

@@ -8,7 +8,7 @@ pub async fn multiply(ctx: &Context, msg: &Message, mut args: Args) -> CommandRe
     let one = args.single::<f64>()?;
     let two = args.single::<f64>()?;
 
-    let product = one * two + 1 as f64;
+    let product = one * two + 1_f64;
 
     msg.channel_id.say(&ctx.http, product).await?;
 
