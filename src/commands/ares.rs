@@ -1,6 +1,15 @@
+use ares::config::Config;
+use ares::perform_cracking;
+use log::{debug, trace};
+use serenity::framework::standard::macros::command;
+use serenity::framework::standard::{Args, CommandResult};
+use serenity::model::prelude::*;
+use serenity::prelude::*;
+use serenity::utils::Colour;
+
 #[command]
-async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
-    let message = msg.content.strip_prefix("$ares ").unwrap();
+async fn ares(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
+    let message = args.single::<String>()?;
     let user = &msg.author.id;
     let tag_user = format!("👋 <@!{}>", user);
 
@@ -40,7 +49,7 @@ async fn ares(ctx: &Context, msg: &Message) -> CommandResult {
     trace!("The message is {}", &to_decode);
     let mut config = Config::default();
     // 10 seconds because the bot is slow
-    config.timeout = 1;
+    config.timeout = 10;
     let result = perform_cracking(&to_decode, config);
     if result.is_none() {
         trace!("Ares is returning something....");
