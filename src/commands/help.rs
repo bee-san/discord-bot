@@ -15,6 +15,12 @@ $ares aGVsbG8=
 
 Decodes the text aGVsbG8= with Ares, the next generation of Ciphey <http://github.com/bee-san/Ares>
 
+Ares has an optional argument to increase or decrease the timeout up to 30 seconds.
+
+```
+$ares aGVsbG8= timeout=15
+```
+
 ```
 $ares https://pastebin.com/raw/05umSkne
 ```
