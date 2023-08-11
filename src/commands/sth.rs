@@ -26,8 +26,8 @@ async fn sth(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
 
     #[derive(Deserialize)]
     struct Body {
-        Plaintext: String,
-        Type: String,
+        plaintext: String,
+        hashtype: String,
     }
 
     let mut data = HashMap::new();
@@ -43,8 +43,8 @@ async fn sth(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
 
     let mut text: Data = resp.json().await.unwrap();
     let data = text.body.remove(message).unwrap();
-    let output = data.Plaintext;
-    let output_type = data.Type;
+    let output = data.plaintext;
+    let output_type = data.hashtype;
 
     let _msg = msg
         .channel_id
