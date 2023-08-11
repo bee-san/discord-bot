@@ -177,9 +177,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.0.29"
+version = "4.0.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d63b9e9c07271b9957ad22c173bae2a4d9a81127680962039296abcd2f8251d"
+checksum = "a7db700bc935f9e43e88d00b0850dae18a63773cfbec6d8e070fccf7fef89a39"
 dependencies = [
  "bitflags",
  "clap_derive",
@@ -864,6 +864,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "lazy-regex"
+version = "2.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae9656bf98b413727b974a451039bc00ce546c3de9440cb4a7b65222b71e17cc"
+dependencies = [
+ "lazy-regex-proc_macros",
+ "once_cell",
+ "regex",
+]
+
+[[package]]
+name = "lazy-regex-proc_macros"
+version = "2.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da3c3042a5f73640f091fda4175798f2b51c2107deeab18e3017873a4772dd36"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "regex",
+ "syn",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1189,9 +1212,9 @@ dependencies = [
 
 [[package]]
 name = "project_ares"
-version = "0.8.0"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5157b5627d297a36739bb6d132505a06844bd28b99cc39600608fcb1c9bc3e3a"
+checksum = "6a9b41eae9bf3df9e3c4494d60fd170e66f603b4071c79e67c7aa6a648408b36"
 dependencies = [
  "ansi_term",
  "base64 0.20.0",
@@ -1203,11 +1226,14 @@ dependencies = [
  "data-encoding",
  "env_logger",
  "include_dir",
+ "lazy-regex",
+ "lazy_static",
  "lemmeknow",
  "log",
  "num",
  "once_cell",
  "rayon",
+ "regex",
  "text_io",
 ]
 
