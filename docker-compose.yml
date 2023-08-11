@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  discord_bot:
+    image: autumnskerritt/discord_bot:latest
+    environment:
+      - DISCORD_TOKEN=XXXX
+    restart: always
