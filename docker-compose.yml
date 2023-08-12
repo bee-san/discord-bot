@@ -6,3 +6,8 @@ services:
     environment:
       - DISCORD_TOKEN=XXXX
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 500M
