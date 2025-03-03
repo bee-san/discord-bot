@@ -143,12 +143,6 @@ dependencies = [
 
 [[package]]
 name = "base64"
-version = "0.20.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ea22880d78093b0cbe17c89f64a7d457941e65759157ec6cb31a31d652b05e5"
-
-[[package]]
-name = "base64"
 version = "0.21.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9d297deb1925b89f2ccc13d7635fa0714f12c87adce1c75356b39ca9b7178567"
@@ -1696,12 +1690,12 @@ dependencies = [
 
 [[package]]
 name = "project_ares"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a9b41eae9bf3df9e3c4494d60fd170e66f603b4071c79e67c7aa6a648408b36"
+checksum = "d73761e32ab2eacde3b7eef3a9c635f224556f65653742e4d67599098587d541"
 dependencies = [
  "ansi_term",
- "base64 0.20.0",
+ "base64 0.21.7",
  "base65536",
  "base91",
  "bs58",
@@ -1719,6 +1713,7 @@ dependencies = [
  "rayon",
  "regex",
  "text_io",
+ "urlencoding",
 ]
 
 [[package]]
@@ -2923,6 +2918,12 @@ dependencies = [
  "percent-encoding",
  "serde",
 ]
+
+[[package]]
+name = "urlencoding"
+version = "2.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 
 [[package]]
 name = "utf-8"
