@@ -1,12 +1,23 @@
-version: '3'
+version: '3.8'
 
 services:
   discord_bot:
-    image: autumnskerritt/discord_bot:latest
+    image: ghcr.io/bee-san/discord-bot:latest
     environment:
       - DISCORD_TOKEN=XXXX
-    restart: always
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     deploy:
       resources:
         limits:
           memory: 500M
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup --include-stopped --include-restarting
+    environment:
+      - WATCHTOWER_LABEL_ENABLE=true
+    restart: unless-stopped
