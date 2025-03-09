@@ -14,7 +14,8 @@ services:
           memory: 500M
 
   watchtower:
-    image: containrrr/watchtower:latest
+    # up to date fork https://github.com/beatkind/watchtower
+    image: beatkind/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30 --cleanup --include-stopped --include-restarting
