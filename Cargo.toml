@@ -24,4 +24,4 @@ features = ["macros", "signal", "rt-multi-thread"]
 
 [dependencies.serenity]
 features = ["cache", "framework", "standard_framework", "rustls_backend"]
-version = "0.11.5"
+version = "0.12.4"
