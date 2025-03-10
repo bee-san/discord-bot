@@ -688,6 +688,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "fancy-regex"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b95f7c0680e4142284cf8b22c14a476e87d61b004a3a0861872b32ef7ead40a2"
+dependencies = [
+ "bit-set",
+ "regex",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1264,13 +1274,29 @@ checksum = "b5c3519c5f4257dc07fce33ea7f4781a7bca508606acee63a3cac282b16aa941"
 dependencies = [
  "clap",
  "comfy-table",
- "fancy-regex",
+ "fancy-regex 0.10.0",
  "once_cell",
  "rayon",
  "regex",
  "serde",
  "serde_json",
  "uneval",
+]
+
+[[package]]
+name = "lemmeknow"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6a84dc3c9c3aba3b43b2bccec7ff9ca15ee94e6644eac129fef1ffd13d9e4733"
+dependencies = [
+ "clap",
+ "comfy-table",
+ "fancy-regex 0.11.0",
+ "once_cell",
+ "rayon",
+ "regex",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -1605,7 +1631,7 @@ dependencies = [
  "include_dir",
  "lazy-regex",
  "lazy_static",
- "lemmeknow",
+ "lemmeknow 0.7.0",
  "log",
  "num",
  "once_cell",
@@ -2570,7 +2596,7 @@ dependencies = [
  "cipher_identifier",
  "dotenv",
  "gethostname",
- "lemmeknow",
+ "lemmeknow 0.8.0",
  "log",
  "project_ares",
  "reqwest",
