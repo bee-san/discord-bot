@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 gethostname = "1.0.0"
 lemmeknow = "0.8.0"
-log = "0.4.17"
+log = "0.4.27"
 project_ares = "0.12.0"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
 serde = "1.0.219"
