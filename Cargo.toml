@@ -19,7 +19,7 @@ dotenv = "0.15.0"
 cipher_identifier = "0.2.0"
 
 [dependencies.tokio]
-version = "1.45"
+version = "1.46"
 features = ["macros", "signal", "rt-multi-thread"]
 
 [dependencies.serenity]
