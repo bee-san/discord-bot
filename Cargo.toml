@@ -14,7 +14,7 @@ reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"
 serde = "1.0.219"
 serde_json = "1.0.143"
 tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
+tracing-subscriber = "0.3.20"
 dotenv = "0.15.0"
 cipher_identifier = "0.2.0"
 
