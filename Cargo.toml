@@ -12,7 +12,7 @@ log = "0.4.29"
 project_ares = "0.12.0"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
 serde = "1.0.228"
-serde_json = "1.0.146"
+serde_json = "1.0.147"
 tracing = "0.1.44"
 tracing-subscriber = "0.3.22"
 dotenv = "0.15.0"
